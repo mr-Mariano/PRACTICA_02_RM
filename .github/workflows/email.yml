@@ -1,0 +1,32 @@
+name: Send Email Notification
+on:
+  push:
+    branches:
+      - main
+      - feature_a
+      - feature_b
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          # Server settings (Gmail SMTP)
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+
+          # Authentication
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_PASSWORD }}
+
+          # Email Content
+          subject: Changes made to branch - ${{ github.ref_name}}
+          to: ${{ secrets.GMAIL_USERNAME }}
+          from: GitHub Actions <${{ secrets.GMAIL_USERNAME }}>
+          body: |
+            The workflow for ${{ github.repository }} was triggered!
+            Status: ${{ job.status }}
+            Commit: ${{ github.sha }}
