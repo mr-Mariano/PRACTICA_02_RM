@@ -1,5 +1,10 @@
 name: Send Email Notification
-on: [push]
+on:
+  push:
+    branches:
+      - main
+      - feature_a
+      - feature_b
 
 jobs:
   send-email:
